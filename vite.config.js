@@ -30,7 +30,7 @@ export default defineConfig({
             return `assets/images/[name]-[hash][extname]`;
           }
 
-          if (/glb|hdr/i.test(extType)) {
+          if (/glb|hdr|gltf|bin/i.test(extType)) {
             return `assets/models/[name]-[hash][extname]`;
           }
 
@@ -42,15 +42,12 @@ export default defineConfig({
         },
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("@tanstack")) return "vendor-tanstack";
-            if (id.includes("react")) return "vendor-react";
-            if (id.includes("@socket")) return "vendor-socket";
+            if (id.includes("@react-three")) {
+              return "vendor-react-three";
+            } else if (id.includes("three")) {
+              return "vendor-three";
+            }
             return "vendor";
-          }
-
-          if (id.includes("/features/")) {
-            const feature = id.split("/features/")[1].split("/")[0];
-            return `feature-${feature}`;
           }
         },
       },
